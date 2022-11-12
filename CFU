@@ -7,7 +7,10 @@ goto NotUpdatedPrev
 :DelupdateFIle
 del "Updater.bat"
 echo MsgBox("Program Updated to version: %VersionNum%") > UpdatedScript.vbs
+echo MsgBox("Please Close All CMD tabs left open after update") > UserClose.vbs
 cscript UpdatedScript.vbs
+cscirpt UserClose.vbs
+del UserClose.vbs
 del UpdatedScript.vbs
 Exit /b
 
