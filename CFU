@@ -6,7 +6,7 @@ goto NotUpdatedPrev
 
 :DelupdateFIle
 del "Updater.bat"
-echo MsgBox("Program Updated to %VersionNum%") > UpdatedScript.vbs
+echo MsgBox("Program Updated to version: %VersionNum%") > UpdatedScript.vbs
 cscript UpdatedScript.vbs
 del UpdatedScript.vbs
 
