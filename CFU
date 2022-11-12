@@ -21,7 +21,7 @@ cls
 curl -o upinfo.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/Update
 cls
 for /F "delims=" %%x in ('type upinfo.T-C-R') do set IsUpdate=%%x
-if "%IsUpdate%"=="%Version%" goto NoUpdate
+if "%IsUpdate%"==%Version% goto NoUpdate
 goto UpdateFound
 
 :UpdateFound
