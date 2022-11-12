@@ -5,8 +5,8 @@ if exist "Updater.bat" goto DelupdateFIle
 goto NotUpdatedPrev
 
 :DelupdateFIle
-del"Updater.bat"
-echo MsgBox("Program Updated to %VersionNum") > UpdatedScript.vbs
+del "Updater.bat"
+echo MsgBox("Program Updated to %VersionNum%") > UpdatedScript.vbs
 cscript UpdatedScript.vbs
 del UpdatedScript.vbs
 
