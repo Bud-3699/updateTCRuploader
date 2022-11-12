@@ -21,8 +21,8 @@ cls
 curl -o upinfo.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/Update
 cls
 for /F "delims=" %%x in ('type upinfo.T-C-R') do set IsUpdate=%%x
-if "%IsUpdate%"=="yes" goto UpdateFound
-goto NoUpdate
+if "%IsUpdate%"=="%Version%" goto NoUpdate
+goto UpdateFound
 
 :UpdateFound
 echo Update Found
@@ -68,7 +68,7 @@ exit /b
 :Updating
 cd /d %OrgPathLocation%
 echo @Echo off > Updater.bat
-echo curl -o "Cracker For Uploader TCR.bat" "https://raw.githubusercontent.com/Bud-3699/updateTCRuploader/main/CFU" >> Updater.bat
+echo curl -o "Checker.bat" "https://raw.githubusercontent.com/Bud-3699/updateTCRuploader/main/CFU" >> Updater.bat
 echo cls >>Updater.bat
 echo if exist "Cracker For Uploader TCR.bat" start "Checker.bat" >> Updater.bat
 echo goto Failed >> Updater.bat
