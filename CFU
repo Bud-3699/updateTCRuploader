@@ -9,6 +9,7 @@ del "Updater.bat"
 echo MsgBox("Program Updated to version: %VersionNum%") > UpdatedScript.vbs
 cscript UpdatedScript.vbs
 del UpdatedScript.vbs
+Exit /b
 
 :NotUpdatedPrev
 
