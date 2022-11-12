@@ -1,3 +1,388 @@
-@Echo off
-echo This will be the script
+@echo off
+
+set Version =2
+if exist "Updater.bat" del Updater,bat
+
+Set OrgPathLocation=%cd%
+cd %appdata%\TheCrackRoomsEmu\temp"
+
+Ping www.google.com -n 1 -w 1000 > null
+if errorlevel 1 (echo MsgBox ("This script needs to connect to online server for ownership checks") > CheckCon.vbs) else (echo.)
+if exist "CheckCon.vbs" goto NoConnectionFound
+goto ConnectionEstablished
+
+:NoConnectionFound
+cscript CheckCon.vbs
+del CheckCon.vbs
+goto Exit
+
+:ConnectionEstablished
+cls
+curl -o upinfo.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/Update
+cls
+for /F "delims=" %%x in ('type upinfo.T-C-R') do set IsUpdate=%%x
+if "%IsUpdate%"=="yes" goto UpdateFound
+goto NoUpdate
+
+:UpdateFound
+echo Update Found
+cls
+curl -o upinfo.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/UK
+cls
+for /F "delims=" %%x in ('type upinfo.T-C-R') do set UpKeyDown=%%x
+
+Call :YesNoBox "Do You want to Update?"
+if "%YesNo%"=="7" goto UpdateKeyInput
+goto Updating
+
+:UpdateKeyInput
+> UpdateKeyCheck.vbs ECHO WScript.Echo InputBox( "UpdateBypass Key:", "The Crack Rooms - Update Bypass Key", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo UpdateKeyCheck.vbs') DO SET UpdateKey=%%A
+if "%UpdateKey%"=="%UpKeyDown%" goto NoUpdate
+echo MsgBox("Key Is Invalid Or doesnt match database. Closing application") > NotMatch.vbs
+cscript NotMatch.vbs
+del NotMatch.vbs
+goto Exit
+
+
+Echo You are not supposed to be here
+pause 
+
+:YesNoBox
+REM returns 6 = Yes, 7 = No. Type=4 = Yes/No
+set YesNo=
+set MsgType=4
+set heading=%~2
+set message=%~1
+echo wscript.echo msgbox(WScript.Arguments(0),%MsgType%,WScript.Arguments(1)) >"%temp%\input.vbs"
+for /f "tokens=* delims=" %%a in ('cscript //nologo "%temp%\input.vbs" "%message%" "%heading%"') do set YesNo=%%a
+exit /b
+
+:MessageBox
+set heading=%~2
+set message=%~1
+echo msgbox WScript.Arguments(0),0,WScript.Arguments(1) >"%temp%\input.vbs"
+cscript //nologo "%temp%\input.vbs" "%message%" "%heading%"
+exit /b
+
+:Updating
+cd /d %OrgPathLocation%
+echo @Echo off > Updater.bat
+echo curl -o "Cracker For Uploader TCR.bat" "https://raw.githubusercontent.com/Bud-3699/updateTCRuploader/main/CFU" >> Updater.bat
+echo cls >>Updater.bat
+echo if exist "Cracker For Uploader TCR.bat" start "Checker.bat" >> Updater.bat
+echo goto Failed >> Updater.bat
+echo :Failed >>Updater.bat
+echo echo Failed to Update. Please Contact Bud or try again. >> Updater.bat
+echo pause >> Updater.bat
+echo Exit /b >> Updater.bat
+start Updater.bat
+Exit /b
+
+
+goto NoUpdate
+
+
+:NoUpdate
+echo MsgBox("Welcome Uploader. We are glad you're here. If you ever want to leave during this process, Just Type Exit in Any box") > WelcomeUser.vbs
+cscript WelcomeUser.vbs
+del WelcomeUser.vbs
+
+> GetKeyFromUser.vbs ECHO WScript.Echo InputBox( "Your Key:", "The Crack Rooms - Key", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo GetKeyFromUser.vbs') DO SET UserKey=%%A
+DEL GetKeyFromUser.vbs
+If "%UserKey%" == "" goto InvalidKey
+if exist "%appdata%\TheCrackRoomsEmu\temp" goto skipdirmake
+mkdir "%appdata%\TheCrackRoomsEmu\temp"
+goto skipdirmake
+:skipdirmake
+cd %appdata%\TheCrackRoomsEmu\temp"
+curl -o KF.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/README.md
+cls
+findstr /m %UserKey% KF.T-C-R >Nul
+if %errorlevel%==0 (
+goto ValidKey
+)
+
+if %errorlevel%==1 (
+goto InvalidKey
+)
+goto Exit
+:InvalidKey
+del KF.T-C-R
+if exist "%UserKey%.T-C-R" del "%UserKey%.T-C-R" 
+echo MsgBox ("Your Key Isnt Valid. Exiting Program") > NotValid.vbs
+cscript NotValid.vbs
+del NotValid.vbs
+exit
+:ValidKey
+del KF.T-C-R
+set URLNAME=https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/%UserKey%.md
+curl -o %UserKey%.T-C-R %URLNAME%
+cls
+for /F "delims=" %%x in ('type %USERKEY%.T-C-R') do set Name=%%x
+del %UserKey%.T-C-R
+echo %Name%
+if "%Name%"=="404: Not Found" goto InvalidKey
+if "%Name%" == "400 Bad Request" goto InvalidKey
+echo MsgBox ("Your Key exists, Welcome Back %Name% ") > Exists.vbs
+cscript Exists.vbs
+del Exists.vbs
+> Document.vbs ECHO WScript.Echo InputBox( "If you Want to bring the document up, Please type the APPID. Leave blank if not", "The Crack Rooms - Uploaders Program - Document ", "")
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo Document.vbs') DO SET DocumentID=%%A
+del Document.vbs
+if "%DocumentID%"=="" goto SkipDoc
+set DocURL=http://app-id-check.rf.gd/Steam/AppID/%DocumentID%/INFO.txt
+start %DocURL%
+goto SkipDoc
+:SkipDoc
+cls
+echo.
+echo.
+echo 1 - Unity
+echo 2 - Unreal
+echo 3 - Other (Beta)
+echo 4 - Exit
+goto EnginePick
+:EnginePick
+> Engine.vbs ECHO WScript.Echo InputBox( "What Engine is the game?", "The Crack Rooms - Uploaders Program - Engine Pick ", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo Engine.vbs') DO SET Engine=%%A
+DEL Engine.vbs
+If %Engine% == 1 goto UnityEngine
+If %Engine% == 2 goto UnrealEngine
+If %Engine% == 3 goto OtherEngine
+If %Engine% == 4 goto Exit
+echo MsgBox("Not Valid Option. Please select Valid Option") > ResetEngine.vbs
+cscript ResetEngine.vbs
+cls
+del ResetEngine.vbs
+goto EnginePick
+:UnityEngine
+goto NotValidPath
+:NotValidPath
+
+
+> GameDir.vbs ECHO WScript.Echo InputBox( "Where is the game located?", "The Crack Rooms - Uploaders Program - Game Dir Folder ", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo GameDir.vbs') DO SET GameDir=%%A
+del GameDir.vbs
+If exist "%GameDir%" goto GameDirExists
+Echo MsgBox ("This isnt a valid Path. Please Select a valid path.") > NotValidPath.vbs
+cscript NotValidPath.vbs
+del NotValidPath.vbs
+goto NotValidPath
+:GameDirExists
+cd /d %GameDir%
+If exist "steam_appid.txt" goto APPIDFOUND
+goto RepeatIfDataNotExist
+:RepeatIfDataNotExist
+> Datafolder.vbs ECHO WScript.Echo InputBox( "What is the Data folder called?", "The Crack Rooms - Uploaders Program - Data folder", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo Datafolder.vbs') DO SET DataFolderDir=%%A
+del Datafolder.vbs
+if exist "%DataFolderDir%\Plugins" goto GameDataFolderExists
+echo MsgBox ("This isnt a valid Data Folder Path. Please Select A valid Data Folder") > DFP.vbs
+cscript DFP.vbs
+del DFP.vbs
+goto RepeatIfDataNotExist
+:GameDataFolderExists
+set arch64=False
+cd /d %DataFolderDir%\Plugins
+set SubFolderExists=""
+if exist "x86_64" set SubFolderExists=\x86_64
+if %SubFolderExists%==\x86_64 cd x86_64
+if exist "steam_api64.dll" goto BIT64
+goto not64
+:BIT64
+echo MsgBox("64 Bit application Detected") > 64bit.vbs
+set arch64=True
+cscript 64bit.vbs
+del 64bit.vbs
+:not64
+if exist "steam_api.dll" goto BIT32
+if %arch64%==True goto startini 
+goto None
+:BIT32
+echo MsgBox("32 Bit application Detected") > 32bit.vbs
+cscript 32bit.vbs
+del 32bit.vbs
+goto startini
+:None
+echo MsgBox ("Game Cant Be Cracked. Exiting") > NotCracked.vbs
+cscript NotCracked.vbs
+del NotCracked.vbs
+goto Exit
+
+:UnrealEngine
+:OtherEngine
 pause
+
+:APPIDFOUND
+for /F "delims=" %%x in ('type steam_appid.txt') do set AppID=%%x
+goto SkipAppID
+
+:::::::::::::::::::
+:: GET THE APPID ::
+:::::::::::::::::::
+
+GOTO startini
+
+::AppID Error messages
+:AppIdNone
+ECHO You must enter an AppID! (Usually 6 digits in the steam url -There could be more)
+GOTO startini
+:AppIdBad
+ECHO You must enter a valid AppID! (Usually 6 digits in the steam url -There could be more)
+GOTO startini
+
+:startini
+
+if "%DocumentID%"=="" goto NoDocIDfound
+echo %DocumentID%>"steam_appid.txt"
+:NoDocIDfound
+
+> appid.vbs ECHO WScript.Echo InputBox( "Please Input Steam App ID", "The Crack Rooms - Steam App ID", "" )
+
+
+IF EXIST steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (steam_appid.txt) DO SET AppID=%%x
+) ELSE IF EXIST ../steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (../steam_appid.txt) DO SET AppID=%%x
+) ELSE IF EXIST ../../steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (../../steam_appid.txt) DO SET AppID=%%x
+) ELSE IF EXIST ../../../steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (../../../steam_appid.txt) DO SET AppID=%%x
+) ELSE IF EXIST ../../../../steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (../../../../steam_appid.txt) DO SET AppID=%%x
+) ELSE IF EXIST ../../../../../steam_appid.txt (
+    FOR /F "tokens=* delims=" %%x IN (../../../../../steam_appid.txt) DO SET AppID=%%x
+) ELSE (
+	::Prompt user
+	FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo appid.vbs') DO SET AppID=%%A
+)
+
+DEL appid.vbs
+
+::Validate
+IF [%AppID%] == [] GOTO AppIdNone
+SET "var="&for /f "delims=0123456789" %%i in ("%AppID%") do set var=%%i
+IF DEFINED var (GOTO AppIdBad)
+
+:SkipAppID
+:AskNumCheck
+cls
+echo.
+echo.
+echo 1 - Regular
+echo 2 - P-T-P Multiplayer
+echo 3 - Steam Unnoficial Multiplayer (480)
+echo 4 - Patch Owned Game with DLC (BETA)
+echo 5 - Remove Crack From Game Files
+echo 6 - Exit Application
+:Crack Options
+> NumbSelect.vbs ECHO WScript.Echo InputBox( "Crack To Apply:", "The Crack Rooms - Uploaders Crack Program", "" )
+FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo NumbSelect.vbs') DO SET UserNumSelect=%%A
+del NumbSelect.vbs
+If %UserNumSelect% == 1 goto OptOne
+If %UserNumSelect% == 2 goto OptTwo
+If %UserNumSelect% == 3 goto OptThree
+If %UserNumSelect% == 4 goto OptFour
+If %UserNumSelect% == 5 goto OptFive
+If %UserNumSelect% == 6 goto Exit
+echo MsgBox ("This wasnt a selected option. Please pick a valid Option") >InvalidOption.vbs
+cscript InvalidOption.vbs
+del InvalidOption.vbs
+goto AskNumCheck
+:OptOne
+echo MsgBox(" Please allow this script to take its time. It is doing alot of proccessing. This also means you may see A lot of code in its respecte window")  > Warning.vbs
+cscript Warning.vbs
+del Warning.vbs
+set FullDirToApi=%GameDir%\%DataFolderDir%%SubFolderExists%
+SETLOCAL
+SET PlayerName=The_Crack_Rooms
+SET Language=english
+SET PreviewIni=no
+IF EXIST steam_api64.dll (GOTO proc64)
+IF EXIST steam_api.dll (GOTO proc32)
+ECHO Error: No steam_api dll's found at this location!
+GOTO enddll
+
+:proc64
+ECHO - 64bit detected -
+::IF EXIST 64Bit.T-C-R (DEL steam_api64.valve)
+REN steam_api64.dll 64Bit.T-C-R
+COPY "%OrgPathLocation%\bin\g64.T-C-R" "%FullDirToApi%\steam_api64.dll"
+IF EXIST steam_api.dll (GOTO proc32)
+GOTO enddll
+
+:proc32
+ECHO - 32bit detected -
+IF EXIST 32Bit.T-C-R (DEL steam_api.valve)
+REN steam_api.dll 32Bit.T-C-R
+COPY "%OrgPathLocation%\bin\g32.T-C-R" "%FullDirToApi%\steam_api.dll"
+GOTO enddll
+
+:enddll
+::::::::::::::::::::::::
+:: Generate valve.ini ::
+::::::::::::::::::::::::
+
+>  valve.ini ECHO [Settings]
+>> valve.ini ECHO AppID = %AppID%
+>> valve.ini ECHO API = 3.27.76.74
+>> valve.ini ECHO PlayerName = %PlayerName%
+>> valve.ini ECHO Language = %Language%
+>> valve.ini ECHO SaveType = 0
+>> valve.ini ECHO ;SteamUserID  =12345678
+>> valve.ini ECHO ;SteamUserIDH =12345678
+>> valve.ini ECHO [DLC]
+>> valve.ini ECHO [UPLAY]
+>> valve.ini ECHO [Option]
+>> valve.ini ECHO FileRedirectCheck=1
+>> valve.ini ECHO UseSavesBackup=0
+>> .
+>> Cracked By The Crack Rooms (Uploader - %Name%)
+
+:::::::::::::::::::::::
+:: Preview valve.ini ::
+:::::::::::::::::::::::
+
+IF [%PreviewIni%] == [no] GOTO Exit
+
+:inipreview
+
+ECHO.
+ECHO --------------[Ini Preview]--------------
+TYPE valve.ini
+ECHO -----------------------------------------
+ECHO.
+
+
+
+:OptTwo
+:OptThree
+:OptFour
+:OptFive
+pause
+
+
+:Exit
+cd /d "%appdata%\TheCrackRoomsEmu\temp"
+cls
+del KF.T-C-R
+cls
+del %UserKey%.T-C-R
+cls
+cd ..
+cls
+echo MsgBox("Application Closing. All Released Files Deleted") > Exit.vbs
+cscript Exit.vbs
+del Exit.vbs
+exit
+
+
+
+
+
+
+
+
+
