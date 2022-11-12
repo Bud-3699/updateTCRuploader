@@ -82,7 +82,11 @@ cd /d %OrgPathLocation%
 echo @Echo off > Updater.bat
 echo curl -o "Checker.bat" "https://raw.githubusercontent.com/Bud-3699/updateTCRuploader/main/CFU" >> Updater.bat
 echo cls >>Updater.bat
-echo if exist "Cracker For Uploader TCR.bat" start "Checker.bat" >> Updater.bat
+echo if exist "Checker.bat" goto start >> Updater.bat
+echo  :start >> Updater.bat
+echo start Checker.bat >> Updater.bat
+echo start "Checker.bat" >> Updater.bat
+echo exit /b >>Updater.bat
 echo goto Failed >> Updater.bat
 echo :Failed >>Updater.bat
 echo echo Failed to Update. Please Contact Bud or try again. >> Updater.bat
