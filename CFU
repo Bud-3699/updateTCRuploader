@@ -1,7 +1,16 @@
 @echo off
 
-set Version =2
-if exist "Updater.bat" del Updater,bat
+set VersionNum=2
+if exist "Updater.bat" goto DelupdateFIle
+goto NotUpdatedPrev
+
+:DelupdateFIle
+del"Updater.bat"
+echo MsgBox("Program Updated to %VersionNum") > UpdatedScript.vbs
+cscript UpdatedScript.vbs
+del UpdatedScript.vbs
+
+:NotUpdatedPrev
 
 Set OrgPathLocation=%cd%
 cd %appdata%\TheCrackRoomsEmu\temp"
@@ -21,7 +30,10 @@ cls
 curl -o upinfo.T-C-R https://raw.githubusercontent.com/Bud-3699/K1E3Y3S7/main/Update
 cls
 for /F "delims=" %%x in ('type upinfo.T-C-R') do set IsUpdate=%%x
-if "%IsUpdate%"==%Version% goto NoUpdate
+echo %IsUpdate% 
+echo %VersionNum%
+if "%IsUpdate%"=="%VersionNum%" goto NoUpdate
+pause
 goto UpdateFound
 
 :UpdateFound
