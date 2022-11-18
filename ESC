@@ -1,0 +1,12 @@
+@Echo Off
+cls
+Echo MsgBox("This program is not fully built. Therefore will be disabled until at a stable Point. YOU WILL BE NOTIFIED WHEN THIS IS AVAILABLE IN MAIN PROGRAM") Warning.vbs
+cscript Warning.vbs
+cls
+del Warning.vbs
+exit /b
+
+Echo MsgBox("Welcome To Experimental Version of Steam Cracker") This program is experimental and therfore WILL contain bugs. This program is used to take your steam library and create cracks of available games. YOU WILL NEED TO ANSWER FIRST TIME SETUP QUESTION. If these answers have changed, for example, a steam directory. There will be a reset option in the near future") > Disclosure.vbs
+cscript Disclosure.vbs
+cls
+del Disclosure.vbs
